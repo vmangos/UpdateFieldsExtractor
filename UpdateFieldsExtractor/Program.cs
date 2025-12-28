@@ -466,7 +466,7 @@ namespace UpdateFieldsExtractor
                                     int address = BasedOn + Info[lastValidIndex].Offset + Info[lastValidIndex].Size;
                                     string basedOnFieldName = BasedOnName.Substring(BasedOnName.IndexOf('.') + 1);
                                     if (basedOnFieldName != "OBJECT_END")
-                                        address += 6;
+                                        address += EndNum["Object"];
 
                                     w1.WriteLine("{{ {0, -22}, {1, -50}, {2, -5}, {3, -3}, {4, -17}, {5} }},", ToTypeMask(LastFieldType), "\"" + LastFieldType.ToUpper() + "_END" + "\"", "0x" + (address).ToString("X"), 0, ToType(0, true), ToFlags(0, versInfo.FilePrivatePart, true));
                                     w2.WriteLine("    {0,-48} = {1,-20}// 0x{2:X3}", LastFieldType.ToUpper() + "_END", basedOnFieldName + " + 0x" + (Info[lastValidIndex].Offset + Info[lastValidIndex].Size).ToString("X"), BasedOn + Info[lastValidIndex].Offset + Info[lastValidIndex].Size);
@@ -502,7 +502,7 @@ namespace UpdateFieldsExtractor
                             int address = BasedOn + Info[j].Offset;
                             string basedOnFieldName = BasedOnName.Substring(BasedOnName.IndexOf('.') + 1);
                             if (basedOnFieldName != "OBJECT_END")
-                                address += 6;
+                                address += EndNum["Object"];
 
                             w1.WriteLine("{{ {0, -22}, {1, -50}, {2, -5}, {3, -3}, {4, -17}, {5} }},", ToTypeMask(sField), "\"" + sName + "\"", "0x" + (address).ToString("X"), Info[j].Size, ToType(Info[j].Type, true), ToFlags(Info[j].Flags, versInfo.FilePrivatePart, true));
                             w2.WriteLine("    {0,-48} = {1,-20}// 0x{2:X3} - Size: {3} - Type: {4} - Flags: {5}", sName, basedOnFieldName + " + 0x" + (Info[j].Offset).ToString("X") + ",", BasedOn + Info[j].Offset, Info[j].Size, ToType(Info[j].Type, false), ToFlags(Info[j].Flags, versInfo.FilePrivatePart, false));
@@ -522,7 +522,7 @@ namespace UpdateFieldsExtractor
                     int address = BasedOn + Info[Info.Count - 1].Offset + Info[Info.Count - 1].Size;
                     string basedOnFieldName = BasedOnName.Substring(BasedOnName.IndexOf('.') + 1);
                     if (basedOnFieldName != "OBJECT_END")
-                        address += 6;
+                        address += EndNum["Object"];
                     w1.WriteLine("{{ {0, -22}, {1, -50}, {2, -5}, {3, -3}, {4, -17}, {5} }},", ToTypeMask(sField), "\"" + LastFieldType.ToUpper() + "_END" + "\"", "0x" + (address).ToString("X"), 0, ToType(0, true), ToFlags(0, versInfo.FilePrivatePart, true));
                     w2.WriteLine("    {0,-48} = {1,-20}// 0x{2:X3}", LastFieldType.ToUpper() + "_END", basedOnFieldName + " + 0x" + (Info[Info.Count - 1].Offset + Info[Info.Count - 1].Size).ToString("X"), BasedOn + Info[Info.Count - 1].Offset + Info[Info.Count - 1].Size);
                 }
