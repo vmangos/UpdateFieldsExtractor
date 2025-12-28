@@ -171,7 +171,10 @@ namespace UpdateFieldsExtractor
                 {
                     return full ? "UF_TYPE_BYTES" : "BYTES";
                 }
-
+                case 6:
+                {
+                    return full ? "UF_TYPE_BYTES2" : "BYTES2";
+                }
                 default:
                 {
                     return "UNK (" + iType + ")";
@@ -206,7 +209,7 @@ namespace UpdateFieldsExtractor
                 if (Convert.ToBoolean(iFlags & 8))
                     AddFlag(ref tmp, "UF_FLAG_UNK4", full);
                 if (Convert.ToBoolean(iFlags & 16))
-                    AddFlag(ref tmp, "UF_FLAG_UNK5", full);
+                    AddFlag(ref tmp, "UF_FLAG_ITEM_OWNER", full);
                 if (Convert.ToBoolean(iFlags & 32))
                     AddFlag(ref tmp, "UF_FLAG_SPECIAL_INFO", full);
                 if (Convert.ToBoolean(iFlags & 64))
@@ -225,7 +228,7 @@ namespace UpdateFieldsExtractor
                 if (Convert.ToBoolean(iFlags & 4))
                     AddFlag(ref tmp, "UF_FLAG_OWNER_ONLY", full);
                 if (Convert.ToBoolean(iFlags & 8))
-                    AddFlag(ref tmp, "UF_FLAG_UNK4", full);
+                    AddFlag(ref tmp, "UF_FLAG_ITEM_OWNER", full);
                 if (Convert.ToBoolean(iFlags & 16))
                     AddFlag(ref tmp, "UF_FLAG_SPECIAL_INFO", full);
                 if (Convert.ToBoolean(iFlags & 32))
@@ -353,7 +356,16 @@ namespace UpdateFieldsExtractor
                     f.Seek(FieldTypesBegin + i * 5 * 4 + Offset, SeekOrigin.Begin);
                     f.Read(Buffer, 0, 4);
                     Temp = BitConverter.ToInt32(Buffer, 0);
+
                     if (Temp < 0xFFFF)
+                    {
+                        i -= 1;
+                        Offset += 4;
+                        continue;
+                    }
+
+                    long nextAddress = Temp - AddressOffset;
+                    if (nextAddress < 0 || nextAddress > f.Length)
                     {
                         i -= 1;
                         Offset += 4;
