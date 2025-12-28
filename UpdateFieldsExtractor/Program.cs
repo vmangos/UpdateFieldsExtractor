@@ -372,6 +372,15 @@ namespace UpdateFieldsExtractor
                         continue;
                     }
 
+                    long savedPosition = f.Position;
+                    string fieldName = ReadString(f, nextAddress);
+                    if (!string.IsNullOrEmpty(fieldName) && !Names.Contains(fieldName))
+                    {
+                        Console.WriteLine($"Found field {fieldName} not found in initial list of names.");
+                        loopTo += 1;
+                    }
+                    f.Position = savedPosition;
+
                     var tmp = new TypeEntry
                     {
                         Name = Temp
